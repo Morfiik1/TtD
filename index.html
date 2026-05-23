@@ -3,158 +3,402 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>18+</title>
-
+<title>Open in Browser</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
 <style>
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0d0d;
+    --card: rgba(255,255,255,0.07);
+    --border: rgba(255,255,255,0.12);
+    --text: #f0f0f0;
+    --muted: #aaa;
+    --accent: #fe2c55;
+    --accent2: #25f4ee;
+    --step-bg: rgba(255,255,255,0.05);
+  }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-    position: relative;
+    justify-content: center;
+    padding: 24px 16px;
     overflow: hidden;
-}
-.gif-container {
+    position: relative;
+  }
+
+  /* Ambient blobs */
+  .blob {
     position: fixed;
-    left: 50%;
-    bottom: 5%;
-    transform: translateX(-50%);
-    width: 60vw;
-    z-index: -1;
-}
-.gif-container img {
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .blob-1 {
+    width: 340px; height: 340px;
+    background: var(--accent);
+    top: -80px; right: -80px;
+  }
+  .blob-2 {
+    width: 280px; height: 280px;
+    background: var(--accent2);
+    bottom: -60px; left: -60px;
+  }
+
+  .card {
+    position: relative;
+    z-index: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 32px 24px 28px;
+    max-width: 400px;
     width: 100%;
-}
-.arrow {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 50%;
-    animation: bounce 2s infinite;
-}
-@keyframes bounce {
-    0%,20%,50%,80%,100% { transform: translateY(0); }
-    40%,60% { transform: translateY(-15px); }
-}
-.default-landing {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    animation: fadeUp 0.5s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .logo-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+
+  /* TikTok icon SVG inline */
+  .tt-icon {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+  }
+
+  .logo-text {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .headline {
+    font-size: 22px;
+    font-weight: 900;
+    line-height: 1.3;
+    margin-bottom: 24px;
+    color: #fff;
+  }
+  .headline span {
+    color: var(--accent2);
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin-bottom: 22px;
+  }
+
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: var(--step-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 14px 16px;
+  }
+
+  .step-num {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #ff6b6b);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 900;
+    color: #fff;
+    margin-top: 1px;
+  }
+
+  .step-text {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.45;
+    color: var(--text);
+  }
+
+  .step-sub {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  /* Animated dots arrow pointing top-right */
+  .arrow-hint {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent2);
+    letter-spacing: 0.04em;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  .arrow-icon {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    align-items: center;
+    animation: bounceUp 1.5s infinite;
+    flex-shrink: 0;
+  }
+  @keyframes bounceUp {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+  .arrow-icon span {
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-right: 2.5px solid var(--accent2);
+    border-top: 2.5px solid var(--accent2);
+    transform: rotate(-45deg);
+  }
+
+  /* Three-dots visual */
+  .dots-visual {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    background: rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 4px 10px;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+  .dots-visual i {
+    display: block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #fff;
+  }
+
+  /* Loading screen */
+  #redirect-screen {
     display: none;
-    text-align: center;
-    margin-top: 40%;
-}
-.notification {
-    background-color: rgba(255,255,255,0.85);
-    border-radius: 12px;
-    padding: 16px 20px;
-    width: 90%;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-.notification-title {
-    font-size: 20px;
-    font-weight: bold;
-    text-align: left;
-    margin-bottom: 8px;
-}
-.instructions {
-    font-size: 17px;
-    text-align: left;
-    margin-bottom: 6px;
-}
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .spinner {
+    width: 48px;
+    height: 48px;
+    border: 3px solid rgba(255,255,255,0.1);
+    border-top-color: var(--accent2);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .redirect-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--muted);
+  }
 </style>
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-
-    const translations = {
-        en: {
-            title: "You opened this in TikTok. To continue, open it in your browser.",
-            step1: "1. Tap the three dots in the top right corner.",
-            step2: "2. Select \"Open in browser\"."
-        },
-        ru: {
-            title: "Вы открыли это в TikTok. Чтобы продолжить, откройте в браузере.",
-            step1: "1. Нажмите на три точки в правом верхнем углу.",
-            step2: "2. Выберите \"Открыть в браузере\"."
-        },
-        uk: {
-            title: "Ви відкрили це в TikTok. Щоб продовжити, відкрийте у браузері.",
-            step1: "1. Натисніть на три крапки у верхньому правому куті.",
-            step2: "2. Виберіть \"Відкрити у браузері\"."
-        },
-        es: {
-            title: "Abriste esto en TikTok. Para continuar, ábrelo en el navegador.",
-            step1: "1. Toca los tres puntos en la esquina superior derecha.",
-            step2: "2. Selecciona \"Abrir en el navegador\"."
-        },
-        pt: {
-            title: "Você abriu isso no TikTok. Para continuar, abra no navegador.",
-            step1: "1. Toque nos três pontos no canto superior direito.",
-            step2: "2. Selecione \"Abrir no navegador\"."
-        },
-        fr: {
-            title: "Vous avez ouvert ceci dans TikTok. Pour continuer, ouvrez-le dans le navigateur.",
-            step1: "1. Appuyez sur les trois points en haut à droite.",
-            step2: "2. Sélectionnez \"Ouvrir dans le navigateur\"."
-        },
-        de: {
-            title: "Du hast dies in TikTok geöffnet. Öffne es im Browser, um fortzufahren.",
-            step1: "1. Tippe auf die drei Punkte oben rechts.",
-            step2: "2. Wähle \"Im Browser öffnen\"."
-        }
-    };
-
-    // Детект языка
-    let userLang = navigator.language || navigator.userLanguage;
-    userLang = userLang.substring(0,2).toLowerCase();
-
-    const lang = translations[userLang] ? userLang : "en";
-
-    // Вставляем перевод
-    document.getElementById("title").innerText = translations[lang].title;
-    document.getElementById("step1").innerText = translations[lang].step1;
-    document.getElementById("step2").innerText = translations[lang].step2;
-
-    // Детект TikTok / in-app
-    const ua = navigator.userAgent || "";
-    const isTikTok =
-        ua.includes("TikTok") ||
-        ua.includes("Bytedance") ||
-        ua.includes("musical_ly") ||
-        ua.includes("com.zhiliaoapp.musically");
-
-    const isInAppBrowser =
-        ua.includes("FBAN") || 
-        ua.includes("FBAV") || 
-        ua.includes("Instagram") ||
-        ua.includes("Line") ||
-        ua.includes("wv");
-
-    if (isTikTok || isInAppBrowser) {
-        document.querySelector('.default-landing').style.display = "block";
-    } else {
-        window.location.replace("https://skutya.top/click?o=3&a=7133");
-    }
-
-});
-</script>
-
 </head>
 <body>
 
-<div class="gif-container">
-    <img src="https://s4.gifyu.com/images/bLSi6.gif" alt="Background GIF">
-</div>
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
 
-<div class="default-landing">
-    <img src="https://cdn.imgpile.com/f/sGTgXj2_xl.png" alt="Arrow" class="arrow">
-    <div class="notification">
-        <div class="notification-title" id="title"></div>
-        <div class="instructions" id="step1"></div>
-        <div class="instructions" id="step2"></div>
+<!-- TikTok in-app instruction card -->
+<div class="card" id="tiktok-card" style="display:none">
+  <div class="logo-row">
+    <svg class="tt-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="48" height="48" rx="12" fill="#010101"/>
+      <path d="M33.5 10c.4 3.4 2.5 5.7 6 6.2v4.2c-2.1-.2-4-.8-5.7-2v8.9c0 11.2-12.2 14.7-17.1 6.7-3.1-5.1-1-14 8.6-14.4v4.4c-5.1.3-6.4 3.5-5 6 1.5 2.5 5.7 3.1 7.9-.3.5-.9.7-1.9.7-3V10h4.6z" fill="white"/>
+      <path d="M33.5 10c.4 3.4 2.5 5.7 6 6.2v4.2c-2.1-.2-4-.8-5.7-2v8.9c0 11.2-12.2 14.7-17.1 6.7-3.1-5.1-1-14 8.6-14.4v4.4c-5.1.3-6.4 3.5-5 6 1.5 2.5 5.7 3.1 7.9-.3.5-.9.7-1.9.7-3V10h4.6z" fill="url(#ttgrad)" opacity="0.5"/>
+      <defs>
+        <linearGradient id="ttgrad" x1="10" y1="10" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#25f4ee"/>
+          <stop offset="1" stop-color="#fe2c55"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <span class="logo-text">TikTok Browser</span>
+  </div>
+
+  <div class="headline" id="headline">Чтобы продолжить — открой в <span id="browser-word">браузере</span></div>
+
+  <div class="divider"></div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-text" id="step1-text"></div>
+        <div class="step-sub" id="step1-sub"></div>
+      </div>
     </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-text" id="step2-text"></div>
+        <div class="step-sub" id="step2-sub"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-hint">
+    <div class="arrow-icon">
+      <span></span><span></span>
+    </div>
+    <span id="hint-text"></span>
+  </div>
 </div>
 
+<!-- Redirect loading screen -->
+<div id="redirect-screen">
+  <div class="spinner"></div>
+  <div class="redirect-text" id="redirect-text">Перенаправление...</div>
+</div>
+
+<script>
+(function () {
+  const T = {
+    en: {
+      headline: 'To continue — open in <span>browser</span>',
+      browserWord: 'browser',
+      step1: 'Tap the three dots ⋯',
+      step1sub: 'Top-right corner of the screen',
+      step2: 'Select "Open in browser"',
+      step2sub: 'The page will open in Safari or Chrome',
+      hint: 'Look at the top-right corner',
+      redirecting: 'Redirecting...',
+    },
+    ru: {
+      headline: 'Чтобы продолжить — открой в <span>браузере</span>',
+      browserWord: 'браузере',
+      step1: 'Нажми на три точки ⋯',
+      step1sub: 'В правом верхнем углу экрана',
+      step2: 'Выбери «Открыть в браузере»',
+      step2sub: 'Страница откроется в Safari или Chrome',
+      hint: 'Смотри в правый верхний угол ↗',
+      redirecting: 'Перенаправление...',
+    },
+    uk: {
+      headline: 'Щоб продовжити — відкрий у <span>браузері</span>',
+      browserWord: 'браузері',
+      step1: 'Натисни три крапки ⋯',
+      step1sub: 'У правому верхньому куті екрана',
+      step2: 'Вибери «Відкрити у браузері»',
+      step2sub: 'Сторінка відкриється в Safari або Chrome',
+      hint: 'Дивись у правий верхній кут ↗',
+      redirecting: 'Перенаправлення...',
+    },
+    es: {
+      headline: 'Para continuar — ábrelo en el <span>navegador</span>',
+      browserWord: 'navegador',
+      step1: 'Toca los tres puntos ⋯',
+      step1sub: 'Esquina superior derecha de la pantalla',
+      step2: 'Selecciona "Abrir en el navegador"',
+      step2sub: 'La página se abrirá en Safari o Chrome',
+      hint: 'Mira la esquina superior derecha ↗',
+      redirecting: 'Redireccionando...',
+    },
+    pt: {
+      headline: 'Para continuar — abra no <span>navegador</span>',
+      browserWord: 'navegador',
+      step1: 'Toque nos três pontos ⋯',
+      step1sub: 'Canto superior direito da tela',
+      step2: 'Selecione "Abrir no navegador"',
+      step2sub: 'A página abrirá no Safari ou Chrome',
+      hint: 'Olha o canto superior direito ↗',
+      redirecting: 'Redirecionando...',
+    },
+    fr: {
+      headline: 'Pour continuer — ouvre dans le <span>navigateur</span>',
+      browserWord: 'navigateur',
+      step1: 'Appuie sur les trois points ⋯',
+      step1sub: 'Coin supérieur droit de l\'écran',
+      step2: 'Sélectionne «Ouvrir dans le navigateur»',
+      step2sub: 'La page s\'ouvrira dans Safari ou Chrome',
+      hint: 'Regarde en haut à droite ↗',
+      redirecting: 'Redirection...',
+    },
+    de: {
+      headline: 'Um fortzufahren — öffne im <span>Browser</span>',
+      browserWord: 'Browser',
+      step1: 'Tippe auf die drei Punkte ⋯',
+      step1sub: 'Obere rechte Ecke des Bildschirms',
+      step2: 'Wähle «Im Browser öffnen»',
+      step2sub: 'Die Seite öffnet sich in Safari oder Chrome',
+      hint: 'Schau in die obere rechte Ecke ↗',
+      redirecting: 'Weiterleitung...',
+    },
+  };
+
+  // Language detection
+  let lang = (navigator.language || navigator.userLanguage || 'en').substring(0, 2).toLowerCase();
+  if (!T[lang]) lang = 'en';
+  const t = T[lang];
+
+  // Apply text
+  document.getElementById('headline').innerHTML = t.headline;
+  document.getElementById('step1-text').textContent = t.step1;
+  document.getElementById('step1-sub').textContent = t.step1sub;
+  document.getElementById('step2-text').textContent = t.step2;
+  document.getElementById('step2-sub').textContent = t.step2sub;
+  document.getElementById('hint-text').textContent = t.hint;
+  document.getElementById('redirect-text').textContent = t.redirecting;
+
+  // In-app browser detection (TikTok, Instagram, Facebook, Snapchat, etc.)
+  const ua = navigator.userAgent || '';
+  const isTikTok = /TikTok|BytedanceWebview|Bytedance|musical_ly|musically/i.test(ua);
+  const isInstagram = /Instagram/i.test(ua);
+  const isFacebook = /FBAN|FBAV|FB_IAB|FB4A/i.test(ua);
+  const isSnapchat = /Snapchat/i.test(ua);
+  const isInApp = isTikTok || isInstagram || isFacebook || isSnapchat;
+
+  if (isInApp) {
+    document.getElementById('tiktok-card').style.display = 'block';
+  } else {
+    document.getElementById('redirect-screen').style.display = 'flex';
+    window.location.replace("https://serag.top/click?o=2&a=7133");
+  }
+})();
+</script>
 </body>
 </html>
