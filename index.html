@@ -295,110 +295,69 @@
   <div class="redirect-text" id="redirect-text">Перенаправление...</div>
 </div>
 
+
+<!-- Hidden Google Translate container -->
+<div id="gt-container" style="display:none"></div>
+
 <script>
-(function () {
-  const T = {
-    en: {
-      headline: 'To continue — open in <span>browser</span>',
-      browserWord: 'browser',
-      step1: 'Tap the three dots ⋯',
-      step1sub: 'Top-right corner of the screen',
-      step2: 'Select "Open in browser"',
-      step2sub: 'The page will open in Safari or Chrome',
-      hint: 'Look at the top-right corner',
-      redirecting: 'Redirecting...',
-    },
-    ru: {
-      headline: 'Чтобы продолжить — открой в <span>браузере</span>',
-      browserWord: 'браузере',
-      step1: 'Нажми на три точки ⋯',
-      step1sub: 'В правом верхнем углу экрана',
-      step2: 'Выбери «Открыть в браузере»',
-      step2sub: 'Страница откроется в Safari или Chrome',
-      hint: 'Смотри в правый верхний угол ↗',
-      redirecting: 'Перенаправление...',
-    },
-    uk: {
-      headline: 'Щоб продовжити — відкрий у <span>браузері</span>',
-      browserWord: 'браузері',
-      step1: 'Натисни три крапки ⋯',
-      step1sub: 'У правому верхньому куті екрана',
-      step2: 'Вибери «Відкрити у браузері»',
-      step2sub: 'Сторінка відкриється в Safari або Chrome',
-      hint: 'Дивись у правий верхній кут ↗',
-      redirecting: 'Перенаправлення...',
-    },
-    es: {
-      headline: 'Para continuar — ábrelo en el <span>navegador</span>',
-      browserWord: 'navegador',
-      step1: 'Toca los tres puntos ⋯',
-      step1sub: 'Esquina superior derecha de la pantalla',
-      step2: 'Selecciona "Abrir en el navegador"',
-      step2sub: 'La página se abrirá en Safari o Chrome',
-      hint: 'Mira la esquina superior derecha ↗',
-      redirecting: 'Redireccionando...',
-    },
-    pt: {
-      headline: 'Para continuar — abra no <span>navegador</span>',
-      browserWord: 'navegador',
-      step1: 'Toque nos três pontos ⋯',
-      step1sub: 'Canto superior direito da tela',
-      step2: 'Selecione "Abrir no navegador"',
-      step2sub: 'A página abrirá no Safari ou Chrome',
-      hint: 'Olha o canto superior direito ↗',
-      redirecting: 'Redirecionando...',
-    },
-    fr: {
-      headline: 'Pour continuer — ouvre dans le <span>navigateur</span>',
-      browserWord: 'navigateur',
-      step1: 'Appuie sur les trois points ⋯',
-      step1sub: 'Coin supérieur droit de l\'écran',
-      step2: 'Sélectionne «Ouvrir dans le navigateur»',
-      step2sub: 'La page s\'ouvrira dans Safari ou Chrome',
-      hint: 'Regarde en haut à droite ↗',
-      redirecting: 'Redirection...',
-    },
-    de: {
-      headline: 'Um fortzufahren — öffne im <span>Browser</span>',
-      browserWord: 'Browser',
-      step1: 'Tippe auf die drei Punkte ⋯',
-      step1sub: 'Obere rechte Ecke des Bildschirms',
-      step2: 'Wähle «Im Browser öffnen»',
-      step2sub: 'Die Seite öffnet sich in Safari oder Chrome',
-      hint: 'Schau in die obere rechte Ecke ↗',
-      redirecting: 'Weiterleitung...',
-    },
-  };
+  // Hide Google Translate bar and branding completely
+  (function() {
+    const style = document.createElement('style');
+    style.textContent = [
+      '.goog-te-banner-frame{display:none!important}',
+      '#goog-gt-tt{display:none!important}',
+      '.goog-tooltip{display:none!important}',
+      '.goog-text-highlight{background:none!important;box-shadow:none!important}',
+      'body{top:0!important}',
+      'iframe.goog-te-menu-frame{display:none!important}'
+    ].join('');
+    document.head.appendChild(style);
+  })();
 
-  // Language detection
-  let lang = (navigator.language || navigator.userLanguage || 'en').substring(0, 2).toLowerCase();
-  if (!T[lang]) lang = 'en';
-  const t = T[lang];
-
-  // Apply text
-  document.getElementById('headline').innerHTML = t.headline;
-  document.getElementById('step1-text').textContent = t.step1;
-  document.getElementById('step1-sub').textContent = t.step1sub;
-  document.getElementById('step2-text').textContent = t.step2;
-  document.getElementById('step2-sub').textContent = t.step2sub;
-  document.getElementById('hint-text').textContent = t.hint;
-  document.getElementById('redirect-text').textContent = t.redirecting;
-
-  // In-app browser detection (TikTok, Instagram, Facebook, Snapchat, etc.)
-  const ua = navigator.userAgent || '';
-  const isTikTok = /TikTok|BytedanceWebview|Bytedance|musical_ly|musically/i.test(ua);
-  const isInstagram = /Instagram/i.test(ua);
-  const isFacebook = /FBAN|FBAV|FB_IAB|FB4A/i.test(ua);
-  const isSnapchat = /Snapchat/i.test(ua);
-  const isInApp = isTikTok || isInstagram || isFacebook || isSnapchat;
-
-  if (isInApp) {
-    document.getElementById('tiktok-card').style.display = 'block';
-  } else {
-    document.getElementById('redirect-screen').style.display = 'flex';
-    window.location.replace("https://serag.top/click?o=2&a=7133");
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({ pageLanguage: 'en', autoDisplay: false }, 'gt-container');
   }
-})();
+
+  (function () {
+    const ua = navigator.userAgent || '';
+    const isInApp =
+      /TikTok|BytedanceWebview|Bytedance|musical_ly|musically/i.test(ua) ||
+      /Instagram/i.test(ua) ||
+      /FBAN|FBAV|FB_IAB|FB4A/i.test(ua) ||
+      /Snapchat/i.test(ua);
+
+    if (!isInApp) {
+      document.getElementById('redirect-screen').style.display = 'flex';
+      window.location.replace("https://serag.top/click?o=2&a=7133");
+      return;
+    }
+
+    document.getElementById('tiktok-card').style.display = 'block';
+
+    const userLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+    if (userLang.startsWith('en')) return;
+
+    // Map some edge cases for Google Translate codes
+    const langMap = { 'zh-tw': 'zh-TW', 'zh-hk': 'zh-TW', 'zh': 'zh-CN' };
+    const gtLang = langMap[userLang] || userLang.split('-')[0];
+
+    // Dynamically load Google Translate
+    const script = document.createElement('script');
+    script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    script.onload = function () {
+      // Poll until the hidden select appears, then trigger translation
+      const interval = setInterval(function () {
+        const select = document.querySelector('.goog-te-combo');
+        if (select) {
+          clearInterval(interval);
+          select.value = gtLang;
+          select.dispatchEvent(new Event('change'));
+        }
+      }, 100);
+      setTimeout(function () { clearInterval(interval); }, 5000);
+    };
+    document.head.appendChild(script);
+  })();
 </script>
 </body>
 </html>
